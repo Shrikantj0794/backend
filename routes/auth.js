@@ -19,7 +19,9 @@ router.post('/', [ //adding validations
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-      }).then(user => res.json(user));
+      }).then(user => res.json(user))
+      .catch(err => {console.log(err)
+    res.json({errors: 'please enter a Unique value foe email'})})
 })
 
 module.exports = router
