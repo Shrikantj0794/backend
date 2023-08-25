@@ -7,14 +7,19 @@ const { body, validationResult } = require('express-validator');
 router.post('/', [ //adding validations
     body('name', 'Enter a valid name').isLength({ min:3 }),
     body('email', 'Enter a valid email').isEmail(),
-    body('password').isLength({ min:3 })
+    body('password','password must be atleast 5 char').isLength({ min:5 })
 ],(req,res)=>{
     //msg for errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    res.send(req.body)
+    //create user
+    User.create({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password,
+      }).then(user => res.json(user));
 })
 
 module.exports = router
