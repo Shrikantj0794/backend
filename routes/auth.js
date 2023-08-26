@@ -49,8 +49,12 @@ router.post('/createuser', [ //adding validations
 
     } catch (error) {
       console.log(error.message);
-      res.status(500).send("some error occured")
+      res.status(500).send("Internal server Error")
     }
 })
+
+//Authentication a User using: POST "/api/auth/login". NO login required
+
+
 
 module.exports = router
