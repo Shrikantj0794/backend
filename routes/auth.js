@@ -4,6 +4,10 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 //install bcryptjs (npm install bcryptjs) for hashing password
 const bcrypt = require('bcryptjs'); 
+// install jsonwebtoken
+const jwt = require('jsonwebtoken');
+
+const JWT_SECRET = 'Shriakntj@0794$'
 
 //Create a User using: POST "/api/auth/createuser". NO login required
 router.post('/createuser', [ //adding validations
@@ -26,7 +30,7 @@ router.post('/createuser', [ //adding validations
     }
     
     //To hash a password:
-    const salt = bcrypt.genSaltSync(10);
+    const salt = await bcrypt.genSaltSync(10);
     const secPass = await bcrypt.hash(req.body.password, salt)
 
     user = await User.create({
@@ -34,7 +38,15 @@ router.post('/createuser', [ //adding validations
         email: req.body.email,
         password: secPass,
       })
-      res.json({"successfully": "successfully"})
+      const data = {
+        user:{
+          id: user.id
+        }
+      }
+      const authtoken = jwt.sign(data, JWT_SECRET);
+      res.json({authtoken})
+
+
     } catch (error) {
       console.log(error.message);
       res.status(500).send("some error occured")
