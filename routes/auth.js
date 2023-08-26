@@ -2,6 +2,8 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+//install bcryptjs (npm install bcryptjs) for hashing password
+const bcrypt = require('bcryptjs'); 
 
 //Create a User using: POST "/api/auth/createuser". NO login required
 router.post('/createuser', [ //adding validations
@@ -22,10 +24,15 @@ router.post('/createuser', [ //adding validations
     if(user){
       return res.status(400).json({error: "Sorry a user with this email already axist"})
     }
+    
+    //To hash a password:
+    const salt = bcrypt.genSaltSync(10);
+    const secPass = await bcrypt.hash(req.body.password, salt)
+
     user = await User.create({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: secPass,
       })
       res.json({"successfully": "successfully"})
     } catch (error) {
