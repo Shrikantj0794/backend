@@ -92,7 +92,7 @@ router.post('/login', [ //adding validations
     }
 })
 
-/// ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser". Login required
+// ROUTE 3: Get loggedin User Details using: POST "/api/auth/getuser". Login required
 router.post('/getuser', fetchuser,  async (req, res) => {
 
   try {
