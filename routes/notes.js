@@ -45,4 +45,6 @@ router.post('/addnote', fetchuser, [
         }
     })
 
+// ROUTE 3: Update an existing Note using: POST "/api/auth/updatenote". Login required
+
 module.exports = router
